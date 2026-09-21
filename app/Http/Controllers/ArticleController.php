@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Article;
+
+class ArticleController extends Controller
+{
+    public function index()
+    { 
+        // Databaseကိုconnectလုပ်တာတွေ Query runတာတွေ menualလုပ်စရာမလိုဘူး
+        // ORM - Object Relational Mapping
+        // Database tableထဲက dataတွေကို objectပြောင်းပေးတဲ့နည်းပညာ
+
+        // Controllerက dataပေးမယ်  viewက UIလုပ်မယ်  Controllerမှာပဲ outputပြန်ထုတ်မယ်
+        $data = Article::all(); // Controllerက viewကို dataပေး
+
+        // Controllerကနေ views articlesထဲက index templateကို dataပေးပြီးလှမ်းခေါ်
+        // ("folder name.file name")
+        // Controllerမှာပဲ outputပြန်ထုတ်တယ်
+        return view("articles.index", [
+            'articles' => $data 
+        ]); 
+    } 
+
+    /**
+     * @param mixed $id
+     */
+    public function detail($id)
+    {
+        return "Article Controller Detail - $id";
+    }
+}
