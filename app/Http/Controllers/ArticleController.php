@@ -14,7 +14,8 @@ class ArticleController extends Controller
         // Database tableထဲက dataတွေကို objectပြောင်းပေးတဲ့နည်းပညာ
 
         // Controllerက dataပေးမယ်  viewက UIလုပ်မယ်  Controllerမှာပဲ outputပြန်ထုတ်မယ်
-        $data = Article::all(); // Controllerက viewကို dataပေး
+        $data = Article::latest()->paginate(5); // Controllerက viewကို dataပေး
+        // to show the 5 content in one page and latest content
 
         // Controllerကနေ views articlesထဲက index templateကို dataပေးပြီးလှမ်းခေါ်
         // ("folder name.file name")
@@ -29,6 +30,10 @@ class ArticleController extends Controller
      */
     public function detail($id)
     {
-        return "Article Controller Detail - $id";
+        $article = Article::find($id);
+
+        return view("articles.detail", [
+            'article' => $article,
+        ]);
     }
 }

@@ -1,18 +1,21 @@
 @extends("layouts.app")
+{{-- extendsကိုသုံးပြီး layouts.appကိုခေါ်သုံးတယ် layouts appထဲမှာ containerရှိတယ် --}}
 
-@section("content")
+@section("content") {{-- sectionကိုသုံးပြီး layout appထဲမှာထည့်ပြရမယ့် contentကိုပေးတယ်--}}
     <div class="container" style="max-width: 800px">
-        @foreach($articles as $article)
-            <div class="card mb-2">
+        {{ $articles->links() }} {{-- show the article page link --}}
+        
+        @foreach($articles as $article) {{-- output article using foreach loop --}}
+            <div class="card mb-2"> {{-- show content with card --}}
                 <div class="card-body">
-                    <h4>{{ $article->title }}</h4>
-                    <div class="text-muted">
-                        {{ $article->created_at->diffforHumans() }}
+                    <h4>{{ $article->title }}</h4> {{-- output  article title--}}
+                    <div class="text-muted"> {{-- to be light text color --}}
+                        {{ $article->created_at->diffforHumans() }}{{-- show with hours --}}
                     </div>
-                    <div>
-                        {{ $article->body }}
-                    </div>
-                    <a href="{{ url("/articles/detail/$article->id") }}">
+                    <p>
+                        {{ $article->body }} {{-- output article body --}}
+                    </p>
+                    <a href="{{ url("/articles/detail/$article->id") }}">{{-- Routeသုံး --}}
                         View Detail
                     </a>
                 </div>
