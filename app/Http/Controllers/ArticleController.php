@@ -36,4 +36,31 @@ class ArticleController extends Controller
             'article' => $article,
         ]);
     }
+
+    public function add()
+    {
+        return view("articles.add");
+    }
+
+    public function create()
+    {
+        // take the data from form $_POST
+        // save - INSERT INTO
+        $article = new Article; // create the model
+        $article->title = request()->title; // $_POST['title']
+        $article->body = request()->body; 
+        $article->category_id = request()->category_id; 
+        $article->save();
+
+        return redirect('/articles'); // article listကိုပြန်သွားမယ်
+    }
+
+    public function delete($id)
+    {
+        $article = Article::find($id); // to get the present article
+        $article->delete();
+
+        return redirect("/articles")->with("info", "Deleted an article");
+        // infoနေရာမှာကြိုက်တဲ့နာမည်ပေးလို့ရတယ် ပြန်ခေါ်သုံးရင် အဲ့နာမည်ကိုခေါ်သုံးရမယ်
+    }
 }

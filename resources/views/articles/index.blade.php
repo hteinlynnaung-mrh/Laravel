@@ -4,6 +4,12 @@
 @section("content") {{-- sectionကိုသုံးပြီး layout appထဲမှာထည့်ပြရမယ့် contentကိုပေးတယ်--}}
     <div class="container" style="max-width: 800px">
         {{ $articles->links() }} {{-- show the article page link --}}
+
+        @if(session("info")) {{-- larvelကdataပို့တဲ့အခါ အဲ့ဒီdataကို urlမှာမထည့်ပဲ sessionထဲထည့်လို့ sessionထဲမှာသွားစစ်တယ်  --}}
+            <div class="alert alert-info">
+                {{ session("info") }} 
+            </div>
+        @endif
         
         @foreach($articles as $article) {{-- output article using foreach loop --}}
             <div class="card mb-2"> {{-- show content with card --}}
