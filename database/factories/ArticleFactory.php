@@ -15,10 +15,12 @@ class ArticleFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    public function definition(): array // to create the sample data
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'body' => $this->faker->paragraph,
+            'category_id' => rand(1, 5),
         ];
     }
 }
