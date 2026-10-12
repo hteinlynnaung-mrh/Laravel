@@ -8,6 +8,11 @@ use App\Models\Category;
 
 class ArticleController extends Controller
 {
+    public function __construct() // checking the authentication with middleware
+    {
+        $this->middleware("auth")->except(['index', 'detail']);
+    }
+
     public function index()
     { 
         // Databaseကိုconnectလုပ်တာတွေ Query runတာတွေ menualလုပ်စရာမလိုဘူး
@@ -47,14 +52,19 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $request->validate([
+            "title" => "required",
+            "body" => "required",
+            "category_id" => "required",
+        ]);
         // take the data from form $_POST
         // save - INSERT INTO
         $article = new Article; // create the model
-        $article->title = request()->title; // $_POST['title']
-        $article->body = request()->body; 
-        $article->category_id = request()->category_id; 
+        $article->title = $request->title; // $_POST['title']
+        $article->body = $request->body; 
+        $article->category_id = $request->category_id; 
         $article->save();
 
         return redirect('/articles'); // article listကိုပြန်သွားမယ်

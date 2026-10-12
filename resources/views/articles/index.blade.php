@@ -16,6 +16,9 @@
                 <div class="card-body">
                     <h4>{{ $article->title }}</h4> {{-- output  article title--}}
                     <div class="text-muted"> {{-- to be light text color --}}
+                        <b class="text-success">{{ $article->user->name }}</b>,
+                        <b>Category: </b> {{ $article->category->name }}, {{-- to show category name written by Models\Article.php--}}
+                        <b>Comments: </b> {{ count($article->comments) }},
                         {{ $article->created_at->diffforHumans() }}{{-- show with hours --}}
                     </div>
                     <p>

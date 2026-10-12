@@ -14,17 +14,46 @@
             <div class="card-body">
                 <h4>{{ $article->title }}</h4> {{-- output  article title--}}
                 <div class="text-muted"> {{-- to be light text color --}}
+                    <b>Category: </b> {{ $article->category->name }},
                     {{ $article->created_at->diffforHumans() }}{{-- show with hours --}}
                 </div>
                 <p>
                     {{ $article->body }} {{-- output article body --}}
                 </p>
-                <a href="{{ url("/articles/delete/$article->id") }}" {{-- Routeသုံး --}}
-                    class="btn btn-sm btn-outline-danger">
-                    Delete {{-- delete linkကိုနှိပ်လိုက်ရင် Routeကိုရောက်သွားမယ် Routeကနေ Controllerကိုပို့လိုက်တယ် Controllerကdelete functionအလုပ်လုပ်ပြီး tableထဲကdataကို ဖျက်လိုက်တယ် ဖျက်ပြီးရင် articles indexကိုပြန်လာတယ် --}}
-                </a>
+                @auth
+                    <a href="{{ url("/articles/delete/$article->id") }}" {{-- Routeသုံး --}}
+                        class="btn btn-sm btn-outline-danger">
+                        Delete 
+                        {{-- delete linkကိုနှိပ်လိုက်ရင် Routeကိုရောက်သွားမယ် Routeကနေ Controllerကိုပို့လိုက်တယ် Controllerကdelete functionအလုပ်လုပ်ပြီး tableထဲကdataကို ဖျက်လိုက်တယ် ဖျက်ပြီးရင် articles indexကိုပြန်လာတယ် --}}
+                    </a>
+                @endauth
             </div>
         </div>
+
+        <ul class="list-group mt-4">
+            <li class="list-group-item active">
+                Comments ({{ count($article->comments) }})
+            </li>
+            @foreach ($article->comments as $comment)
+                <li class="list-group-item">
+                    @auth
+                        <a href="{{ url("/comments/delete/$comment->id") }}"
+                        class="btn-close float-end"></a>
+                    @endauth
+
+                    <b class="text-success">{{ $comment->user->name }}</b> -
+                    {{ $comment->content }}
+                </li>
+            @endforeach
+        </ul>
+        @auth
+            <form action="{{ url("/comments/create") }}" method="post">
+                @csrf
+                <input type="hidden" name="article_id" value="{{ $article->id }}">
+                <textarea name="content" class="form-control my-2"></textarea>
+                <button class="btn btn-secondary">Add Comment</button>
+            </form>
+        @endauth
     </div>
 @endsection
 
