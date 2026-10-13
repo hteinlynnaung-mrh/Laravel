@@ -14,6 +14,7 @@
             <div class="card-body">
                 <h4>{{ $article->title }}</h4> {{-- output  article title--}}
                 <div class="text-muted"> {{-- to be light text color --}}
+                    <b class="text-success">{{ $article->user->name }}</b>,
                     <b>Category: </b> {{ $article->category->name }},
                     {{ $article->created_at->diffforHumans() }}{{-- show with hours --}}
                 </div>
@@ -21,11 +22,13 @@
                     {{ $article->body }} {{-- output article body --}}
                 </p>
                 @auth
-                    <a href="{{ url("/articles/delete/$article->id") }}" {{-- Routeသုံး --}}
+                    @can("delete-article", $article) {{-- hide the unauthorized delete article --}}
+                        <a href="{{ url("/articles/delete/$article->id") }}" {{-- Routeသုံး --}}
                         class="btn btn-sm btn-outline-danger">
                         Delete 
                         {{-- delete linkကိုနှိပ်လိုက်ရင် Routeကိုရောက်သွားမယ် Routeကနေ Controllerကိုပို့လိုက်တယ် Controllerကdelete functionအလုပ်လုပ်ပြီး tableထဲကdataကို ဖျက်လိုက်တယ် ဖျက်ပြီးရင် articles indexကိုပြန်လာတယ် --}}
-                    </a>
+                        </a>
+                    @endcan
                 @endauth
             </div>
         </div>
@@ -37,8 +40,10 @@
             @foreach ($article->comments as $comment)
                 <li class="list-group-item">
                     @auth
-                        <a href="{{ url("/comments/delete/$comment->id") }}"
-                        class="btn-close float-end"></a>
+                        @can("delete-comment", $comment) {{-- hide the unauthorized delete comment --}}
+                            <a href="{{ url("/comments/delete/$comment->id") }}"
+                            class="btn-close float-end"></a>
+                        @endcan
                     @endauth
 
                     <b class="text-success">{{ $comment->user->name }}</b> -

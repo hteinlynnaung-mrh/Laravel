@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Category;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -64,7 +66,8 @@ class ArticleController extends Controller
         $article = new Article; // create the model
         $article->title = $request->title; // $_POST['title']
         $article->body = $request->body; 
-        $article->category_id = $request->category_id; 
+        $article->category_id = $request->category_id;
+        $article->user_id = Auth::id();
         $article->save();
 
         return redirect('/articles'); // article listကိုပြန်သွားမယ်
@@ -73,9 +76,14 @@ class ArticleController extends Controller
     public function delete($id)
     {
         $article = Article::find($id); // to get the present article
-        $article->delete();
-
-        return redirect("/articles")->with("info", "Deleted an article");
+        
+        if(Gate::allows("delete-article", $article)) { 
+            // check authorization in delete article
+            $article->delete();
+            return redirect("/articles")->with("info", "Deleted an article");
+        }
+        
+        return back()->with("info", "Unauthorized to delete");
         // infoနေရာမှာကြိုက်တဲ့နာမည်ပေးလို့ရတယ် ပြန်ခေါ်သုံးရင် အဲ့နာမည်ကိုခေါ်သုံးရမယ်
     }
 }
