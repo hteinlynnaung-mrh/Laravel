@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+        // close the category controller with the sanctum
+    }
+
     public function index()
     {
         return Category::all();
